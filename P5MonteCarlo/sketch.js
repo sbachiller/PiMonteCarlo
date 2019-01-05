@@ -1,5 +1,7 @@
 var msg = "PI VALUE: ";
 var actualValue = 0;
+var error;
+var prevError = 10;
 var insidePoints = 0;
 var outsidePoints = 0;
 var MCwidth = 400;
@@ -59,16 +61,19 @@ function draw() {
   ry = getRandomPoint();
   drawPoint(rx,ry);
 
-  //Clear text without redrawing every point
-  fill("white")
-  rect(0,410,MCwidth,200);
-
   actualValue = 4*insidePoints/(insidePoints+outsidePoints);
-  fill("black");
-  textSize(20);
-  text(msg+actualValue, 20, 450);
-  text("Total points: " + (insidePoints+outsidePoints), 20, 470);
-  text("Error: " + abs(actualValue-PI)*100/actualValue, 20, 490);
+  error = abs(actualValue-PI)*100/actualValue;
+  if(error < prevError){
+    //Clear text without redrawing every point
+    fill("white")
+    rect(0,410,MCwidth,200);
+    fill("black");
+    textSize(20);
+    text(msg+actualValue, 20, 450);
+    text("Total points: " + (insidePoints+outsidePoints), 20, 470);
+    text("Error: " + error, 20, 490);
+    prevError = error;
+  }
 
   //Random distribution checking
   fitNumber(rx);
